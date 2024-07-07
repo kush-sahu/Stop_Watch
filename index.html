@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Watch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #010101;
+        }
+        .stopwatch {
+        
+            text-align: center;
+        }
+        .time {
+            font-size: 15vw;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .buttons button {
+            font-size: 3vh;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <div class="time" id="display">00:00:00</div>
+        <div class="buttons">
+            <button onclick="startStopwatch()">Start</button>
+            <button onclick="stopStopwatch()">Stop</button>
+            <button onclick="resetStopwatch()">Reset</button>
+        </div>
+    </div>
+    
+    <script>
+        let startTime;
+        let updatedTime;
+        let difference;
+        let tInterval;
+        let running = false;
+        let paused = false;
+        
+        const display = document.getElementById('display');
+
+        function startStopwatch() {
+            if (!running) {
+                startTime = new Date().getTime();
+                tInterval = setInterval(getShowTime, 1);
+                paused = false;
+                running = true;
+            }
+        }
+
+        function stopStopwatch() {
+            if (running) {
+                clearInterval(tInterval);
+                paused = true;
+                running = false;
+            }
+        }
+
+        function resetStopwatch() {
+            clearInterval(tInterval);
+            display.innerHTML = '00:00:00';
+            running = false;
+            paused = false;
+        }
+
+        function getShowTime() {
+            updatedTime = new Date().getTime();
+            difference = updatedTime - startTime;
+
+            let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            display.innerHTML = hours + ':' + minutes + ':' + seconds;
+        }
+    </script>
+</body>
+</html>
